@@ -237,4 +237,74 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(() => {
         document.body.style.opacity = '1';
     });
+
+    // --- Azerbaijani / English Language Toggle ---
+    const translations = {
+        en: {
+            'nav.home': 'Home',
+            'nav.about': 'About',
+            'nav.skills': 'Skills',
+            'nav.projects': 'Projects',
+            'nav.contact': 'Contact',
+            'hero.greeting': 'Hello, World! I am',
+            'hero.name': 'A Passionate <span class="accent">Developer</span>',
+            'hero.desc': "I'm a 14-year-old tech enthusiast specializing in Python for the backend. I love solving complex problems, building scalable APIs, and constantly learning new technologies.",
+            'hero.cta1': 'View My Work',
+            'hero.cta2': 'Get In Touch',
+            'about.title': 'About <span class="accent">Me</span>',
+            'skills.title': 'Technical <span class="accent">Skills</span>',
+            'projects.title': 'Featured <span class="accent">Projects</span>',
+            'contact.title': 'Get In <span class="accent">Touch</span>'
+        },
+        az: {
+            'nav.home': 'Əsas',
+            'nav.about': 'Haqqında',
+            'nav.skills': 'Bacarıqlar',
+            'nav.projects': 'Layihələr',
+            'nav.contact': 'Əlaqə',
+            'hero.greeting': 'Salam, Dünya! Mən',
+            'hero.name': 'Həvəsli <span class="accent">Proqramçı</span>',
+            'hero.desc': 'Mən 14 yaşlı texnologiya həvəskarıyam və əsasən backend üçün Python ilə işləyirəm. Mürəkkəb problemləri həll etməyi, genişlənə bilən API-lər qurmağı və daim yeni texnologiyalar öyrənməyi sevirəm.',
+            'hero.cta1': 'İşlərimi Gör',
+            'hero.cta2': 'Əlaqə Saxla',
+            'about.title': 'Haqqımda <span class="accent">Mən</span>',
+            'skills.title': 'Texniki <span class="accent">Bacarıqlar</span>',
+            'projects.title': 'Layihələr',
+            'contact.title': 'Əlaqə'
+        }
+    };
+
+    function setLanguage(lang) {
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const text = translations[lang]?.[key];
+            if (!text) return;
+
+            // Preserve HTML markup when the translation contains tags
+            if (text.includes('<')) {
+                el.innerHTML = text;
+            } else {
+                el.textContent = text;
+            }
+        });
+
+        const toggleBtn = document.getElementById('lang-toggle');
+        if (toggleBtn) {
+            toggleBtn.textContent = lang === 'en' ? 'AZ' : 'EN';
+        }
+
+        localStorage.setItem('preferredLang', lang);
+    }
+
+    const preferredLang = localStorage.getItem('preferredLang') || 'en';
+    setLanguage(preferredLang);
+
+    const langToggle = document.getElementById('lang-toggle');
+    if (langToggle) {
+        langToggle.addEventListener('click', () => {
+            const nextLang = (localStorage.getItem('preferredLang') === 'az') ? 'en' : 'az';
+            setLanguage(nextLang);
+        });
+    }
 });
